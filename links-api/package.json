@@ -1,0 +1,15 @@
+{
+  "name": "links-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dayjs": "^1.9.6",
+    "express": "^4.17.1",
+    "serverless-dotenv-plugin": "^3.1.0",
+    "serverless-http": "^2.6.0",
+    "uuid": "^8.3.1"
+  }
+}

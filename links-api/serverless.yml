@@ -1,0 +1,45 @@
+service: ExpiringLinksApi
+frameworkVersion: "2"
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:*
+      Resource: "*"
+functions:
+  app:
+    handler: handler.app
+    events:
+      - http: any {proxy+}
+resources:
+  Resources:
+    linksTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: linksTable
+        GlobalSecondaryIndexes:
+          - IndexName: createdAt-index
+            KeySchema:
+              - AttributeName: createdAt
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
+        AttributeDefinitions:
+          - AttributeName: linkId
+            AttributeType: S
+          - AttributeName: createdAt
+            AttributeType: N
+        KeySchema:
+          - AttributeName: linkId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+plugins:
+  - serverless-dotenv-plugin
